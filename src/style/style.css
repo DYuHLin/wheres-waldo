@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Chivo+Mono:ital,wght@0,100;0,200;0,300;0,400;0,700;1,100;1,200;1,400;1,500;1,600&display=swap');
+
+*{
+    font-family: 'Chivo Mono', monospace;
+    margin: 0;
+    padding: 0;
+    color: white;
+}
+
+@keyframes transitionSlow{
+    0%{
+        opacity: 0;
+    }
+
+    100%{
+        opacity: 1;
+    }
+}
+
+.App{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: linear-gradient(to right, rgba(19, 118, 240, 0.8), rgba(92, 160, 243, 0.8));
+    position: relative;
+}
+
+.home{
+    height: 80%;
+    width: 100%;
+    display: flex;
+    padding-left: 28px;
+    padding-right: 28px;
+    margin-left: 32px;
+    align-items: center;
+    justify-content: center;
+}
+
+.levels{
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 22px;
+}
+
+.level{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 22px;
+    background-color: white;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.3s ease-in;
+}
+
+.level:hover{
+    transform: scale(1.01);
+}
+
+.level-img{
+    width: 350px;
+    height: 600px;
+}
