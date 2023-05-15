@@ -25,6 +25,31 @@
     position: relative;
 }
 
+.content{
+    height: 100%;
+    width: 100%;
+    display: flex;
+    position: relative;
+}
+
+.header{
+    display: flex;
+    justify-content: space-between;
+    height: 60px;
+    padding-top: 18px;
+    position: relative;
+    background-image: linear-gradient(to right, rgba(20, 94, 184, 0.8), rgba(16, 96, 194, 0.8));
+}
+
+.left{
+    padding-left: 22px;
+}
+
+.logo-text{
+    font-size: 32px;
+    color: white;
+}
+
 .home{
     height: 80%;
     width: 100%;
@@ -32,6 +57,7 @@
     padding-left: 28px;
     padding-right: 28px;
     margin-left: 32px;
+    margin-top: 32px;
     align-items: center;
     justify-content: center;
 }
@@ -60,4 +86,29 @@
 .level-img{
     width: 350px;
     height: 600px;
+    border-radius: 8px;
 }
+
+.level-page{
+    width: 100%;
+    display: flex;
+}
+
+.game{
+    width: 100%;
+    display: flex;
+    position: relative;
+}
+
+.game-level{
+    width: 100%;
+}
+
+body::-webkit-scrollbar {
+    width: 10px;
+  }
+   
+  body::-webkit-scrollbar-thumb {
+    background-color: darkgrey;
+    border-radius: 7px;
+  }

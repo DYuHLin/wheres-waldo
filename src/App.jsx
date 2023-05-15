@@ -1,15 +1,21 @@
 import React from "react";
-import { BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
 import "./style/style.css";
+import LevelPage from "./Components/LevelPage";
+import Nav from "./Components/Nav";
 
 function App() {
   return (
     <Router>
       <div className="App">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'></link>  
-
+        <Nav />
         <div className="content">
-          <HomePage />
+          <Routes>
+            <Route path="/" element = {<HomePage />} />
+            <Route path="/:id" element = {<LevelPage />} />
+          </Routes>
+          
         </div>
       </div>
     </Router>
@@ -20,21 +26,26 @@ const HomePage = () => {
   return(
     <div className="home">
       <div className="levels">
-        <div className="level">
-          <img className="level-img" src = {`./img/level1.jpg`} alt="fashionable people" />
-        </div>
-
-        <div className="level">
-          <img className="level-img" src = {`./img/level2.jpg`} alt="fashionable people" />
-        </div>
-
-        <div className="level">
-          <img className="level-img" src = {`./img/level3.jpg`} alt="fashionable people" />
-        </div>
-
-        <div className="level">
-          <img className="level-img" src = {`./img/level4.jpg`} alt="fashionable people" />
-        </div>
+        <Link to = {"/1"}>
+          <div className="level">
+            <img className="level-img" src = {`./img/1.jpg`} alt="fashionable people" />
+          </div>
+        </Link>
+        <Link to = {"/2"}>
+          <div className="level">
+            <img className="level-img" src = {`./img/2.jpg`} alt="fashionable people" />
+          </div>
+        </Link>
+        <Link to = {"/3"}>
+          <div className="level">
+            <img className="level-img" src = {`./img/3.jpg`} alt="fashionable people" />
+          </div>
+        </Link>
+        <Link to = {"/4"}>
+          <div className="level">
+            <img className="level-img" src = {`./img/4.jpg`} alt="fashionable people" />
+          </div>
+        </Link>
       </div>
     </div>
   )
