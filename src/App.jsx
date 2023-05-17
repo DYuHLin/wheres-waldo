@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Link, Route, Routes } from "react-router-dom";
 import "./style/style.css";
 import LevelPage from "./Components/LevelPage";
 import Nav from "./Components/Nav";
+import { FirebaseProvider } from "./Context/FirebaseContext";
 
 function App() {
   return (
@@ -10,13 +11,15 @@ function App() {
       <div className="App">
         <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'></link>  
         <Nav />
-        <div className="content">
-          <Routes>
-            <Route path="/" element = {<HomePage />} />
-            <Route path="/:id" element = {<LevelPage />} />
-          </Routes>
-          
-        </div>
+        <FirebaseProvider>
+          <div className="content">
+            <Routes>
+              <Route path="/" element = {<HomePage />} />
+              <Route path="/:id" element = {<LevelPage />} />
+            </Routes>
+          </div>
+        </FirebaseProvider>
+
       </div>
     </Router>
   );

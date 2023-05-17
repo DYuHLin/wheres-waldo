@@ -1,8 +1,14 @@
 import React, {useState, useEffect} from 'react'
 import { useParams } from "react-router-dom";
+import FirebaseContext from '../Context/FirebaseContext';
+import { useContext } from 'react';
+import { getDocs } from 'firebase/firestore';
 
 const LevelPage = () => {
     const {id} = useParams();
+    const {getCollDb} = useContext(FirebaseContext);
+
+    let collection;
 
     let xPos;
     let yPos;
@@ -15,9 +21,9 @@ const LevelPage = () => {
       // console.log(`X: ${xPos} || Y: ${yPos}`);
 
       const target = {
-        x: 90,
-        y: 83,
-        padding: 5
+        x: 91,
+        y: 85,
+        padding: 2
       }
 
       const x = Math.floor((e.clientX - xPos) / e.target.getBoundingClientRect().width * 10000)/100;
@@ -34,6 +40,22 @@ const LevelPage = () => {
         console.log("Not Found");
       }
     };
+
+    let items = [];
+
+    useEffect(() => {
+      collection = getCollDb(id);
+
+      getDocs(collection)
+        .then((snapshot) => {
+          snapshot.docs.forEach((doc) => {
+            items.push({...doc.data(), id: doc.id});
+          });
+          console.log(items);
+        }).catch(err => {
+          console.log(err.message);
+        });
+    },[]);
 
   return (
     <div className='levelPage'>

@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import { initializeApp } from "firebase/app";
+import {getFirestore, collection} from "firebase/firestore";
 
 const FirebaseContext = createContext();
 
@@ -18,10 +19,11 @@ const app = initializeApp(firebaseConfig);
 export function FirebaseProvider({children}){
     const [items, setItems] = useState([]);
 
-    const deleteCart = (index) => {
-        setItems(oldValues => {
-            return oldValues.filter(exp => exp.id !== index)
-        });
+    const db = getFirestore();
+
+    const getCollDb = (num) => {
+        const colRef = collection(db, `${num}`);
+        return colRef;
     };
 
     const incQuantity = (index) => {
@@ -57,7 +59,7 @@ export function FirebaseProvider({children}){
     };
 
     return(
-        <FirebaseContext.Provider value = {{items, addToCart, deleteCart, incQuantity, decQuantity, getTotal}}>
+        <FirebaseContext.Provider value = {{items, getCollDb, incQuantity, decQuantity, getTotal}}>
             {children}
         </FirebaseContext.Provider>
     )
