@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { useParams } from "react-router-dom";
 import FirebaseContext from '../Context/FirebaseContext';
+import {gameObjects} from '../Context/GameContext';
 import { useContext } from 'react';
 import { getDocs } from 'firebase/firestore';
 
@@ -8,17 +9,18 @@ const LevelPage = () => {
     const {id} = useParams();
     const {getCollDb} = useContext(FirebaseContext);
 
+    let conNum = parseInt(id);
+    let newGameObj = gameObjects.filter(old => old.level === conNum);
+
+    const [levelCharacters, setLevelCharacters] = useState(newGameObj);
     let collection;
 
     let xPos;
     let yPos;
 
     const mousePos = (e) => {
-      console.log(e)
       xPos = e.target.getBoundingClientRect().left;
       yPos = e.target.getBoundingClientRect().top;
-
-      // console.log(`X: ${xPos} || Y: ${yPos}`);
 
       const target = {
         x: 91,
@@ -41,17 +43,18 @@ const LevelPage = () => {
       }
     };
 
-    let items = [];
-
+    let finalItems = [];
     useEffect(() => {
+      //getting the coordinates from the db
       collection = getCollDb(id);
 
       getDocs(collection)
         .then((snapshot) => {
+          let items = [];
           snapshot.docs.forEach((doc) => {
             items.push({...doc.data(), id: doc.id});
           });
-          console.log(items);
+          finalItems = items;
         }).catch(err => {
           console.log(err.message);
         });
