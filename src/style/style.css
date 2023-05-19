@@ -97,12 +97,13 @@
 .level-page{
     width: 100%;
     display: flex;
+    position: relative;
 }
 
 .game{
     width: 100%;
     display: flex;
-    position: relative;
+    position: absolute;
 }
 
 .game-level{
@@ -110,8 +111,12 @@
 }
 
 .characters{
+    width: 40%;
     display: flex;
+    flex-direction: row;
     gap: 18px;
+    padding: 16px;
+    position: fixed;
 }
 
 .char-img{
@@ -125,6 +130,26 @@
     border: 2px solid black;
     width: 60px;
     height: 60px;
+}
+
+.options{
+    position: absolute;
+    background-color: black;
+    padding: 12px;
+    border-radius: 7px;
+}
+
+ul{
+    list-style: none;
+}
+
+li{
+    cursor: pointer;
+    padding: 4px;
+}
+
+.hidden{
+    visibility: hidden;
 }
 
 body::-webkit-scrollbar {
