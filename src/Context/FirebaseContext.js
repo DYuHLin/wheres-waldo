@@ -59,7 +59,7 @@ export function FirebaseProvider({children}){
     };
 
     return(
-        <FirebaseContext.Provider value = {{items, getCollDb, incQuantity, decQuantity, getTotal}}>
+        <FirebaseContext.Provider value = {{items, getCollDb, incQuantity, decQuantity, getTotal, db}}>
             {children}
         </FirebaseContext.Provider>
     )

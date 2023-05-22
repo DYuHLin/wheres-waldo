@@ -3,11 +3,11 @@ import { useParams } from "react-router-dom";
 import FirebaseContext from '../Context/FirebaseContext';
 import {gameObjects} from '../Context/GameContext';
 import { useContext } from 'react';
-import { getDocs } from 'firebase/firestore';
+import { onSnapshot, where, getDoc, doc } from 'firebase/firestore';
 
 const LevelPage = () => {
     const {id} = useParams();
-    const {getCollDb} = useContext(FirebaseContext);
+    const {getCollDb,db} = useContext(FirebaseContext);
 
     let conNum = parseInt(id);
     let newGameObj = gameObjects.filter(old => old.level === conNum);
@@ -19,10 +19,13 @@ const LevelPage = () => {
 
     const [levelCharacters, setLevelCharacters] = useState(newGameObj);
     const [optionPos, setOptionPos] = useState(styles);
+    const [coordinated, setCoordinated] = useState({posX: 0, posY: 0});
     let collection;
 
-    let xPos;
-    let yPos;
+    let xPos = 0;
+    let yPos = 0;
+    let x;
+    let y;
 
     const mousePos = (e) => {
       xPos = e.target.getBoundingClientRect().left;
@@ -34,17 +37,20 @@ const LevelPage = () => {
         padding: 2
       }
 
-      const x = Math.floor((e.clientX - xPos) / e.target.getBoundingClientRect().width * 10000)/100;
-      const y = Math.floor((e.clientY - yPos) / e.target.getBoundingClientRect().height * 10000)/100;
+      x = Math.floor((e.clientX - xPos) / e.target.getBoundingClientRect().width * 10000)/100;
+      y = Math.floor((e.clientY - yPos) / e.target.getBoundingClientRect().height * 10000)/100;
 
-      console.log(`X: ${x} || Y: ${y}`)
+      setCoordinated({
+        posX: x,
+        posY: y
+      });
+
+      // console.log(`X: ${x} || Y: ${y}`)
 
       setOptionPos({
         left: x+"%",
         top: y+"%",
       });
-
-      console.log(optionPos);
 
       const charOptions = document.getElementById("options").classList.remove("hidden");
 
@@ -52,32 +58,61 @@ const LevelPage = () => {
         x < target.x + target.padding &&
         y > target.y - target.padding &&
         y < target.y + target.padding){
-        console.log("Found");
+        // console.log("Found");
       } else{
-        console.log("Not Found");
+        // console.log("Not Found");
       }
     };
 
+    const checkFind = (item) => {
+      const padding = 2;
+      let coordinates;
+      const docRef = doc(db, 'characters', `${item}`);
+      console.log(coordinated);
+      getDoc(docRef)
+        .then((doc) => {
+          coordinates = doc.data();
+          console.log(coordinates, doc.id);
+
+          if(coordinated.posX > coordinates.x - padding &&
+            coordinated.posX < coordinates.x + padding &&
+            coordinated.posY > coordinates.y - padding &&
+            coordinated.posY < coordinates.y + padding){
+              
+              console.log("Found");
+          } else{
+              console.log("Not Found");
+          };
+        });
+        const charOptions = document.getElementById("options").classList.add("hidden");
+      // const updatedCharacters = levelCharacters.map((obj) => {
+      //   finalItems.map((coord) => {
+      //     if(x > coord.x - padding &&
+      //       x < coord.x + padding &&
+      //       y > coord.y - padding &&
+      //       y < coord.y + padding){
+      //       console.log("Found");
+      //     } else{
+      //       console.log("Not Found");
+      //     }
+      //   });
+      // });
+
+      // let selectedItem = finalItems.find((obj) => {
+      //   return obj.name === item;
+      // })
+    };
+
     let finalItems = [];
+
     useEffect(() => {
       //getting the coordinates from the db
-      collection = getCollDb(id);
-
-      getDocs(collection)
-        .then((snapshot) => {
-          let items = [];
-          snapshot.docs.forEach((doc) => {
-            items.push({...doc.data(), id: doc.id});
-          });
-          finalItems = items;
-        }).catch(err => {
-          console.log(err.message);
-        });
+        console.log(levelCharacters)
     },[]);
 
   return (
     <div className='levelPage'>
-    
+
         <div className='game'>
             <img className='game-level' src={`./img/${id}.jpg`} alt='game' onClick={(e) => mousePos(e)}/>
 
@@ -85,7 +120,7 @@ const LevelPage = () => {
             <ul>
               {levelCharacters.map(names => {
                 return(
-                  <li>{names.name}</li>
+                  <li onClick={() => {checkFind(names.name)}}>{names.name}</li>
                 )
               })}
             </ul>
@@ -103,7 +138,7 @@ const LevelPage = () => {
           }
         </div>
 
-        
+
     </div>
   )
 }
