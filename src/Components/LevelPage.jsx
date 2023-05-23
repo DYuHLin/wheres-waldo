@@ -1,9 +1,9 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useRef} from 'react'
 import { useParams } from "react-router-dom";
 import FirebaseContext from '../Context/FirebaseContext';
 import {gameObjects} from '../Context/GameContext';
 import { useContext } from 'react';
-import { onSnapshot, where, getDoc, doc } from 'firebase/firestore';
+import { onSnapshot, getDoc, doc } from 'firebase/firestore';
 
 const LevelPage = () => {
     const {id} = useParams();
@@ -20,7 +20,7 @@ const LevelPage = () => {
     const [levelCharacters, setLevelCharacters] = useState(newGameObj);
     const [optionPos, setOptionPos] = useState(styles);
     const [coordinated, setCoordinated] = useState({posX: 0, posY: 0});
-    let collection;
+    const [time, setTime] = useState(0);
 
     let xPos = 0;
     let yPos = 0;
@@ -31,12 +31,6 @@ const LevelPage = () => {
       xPos = e.target.getBoundingClientRect().left;
       yPos = e.target.getBoundingClientRect().top;
 
-      const target = {
-        x: 91,
-        y: 85,
-        padding: 2
-      }
-
       x = Math.floor((e.clientX - xPos) / e.target.getBoundingClientRect().width * 10000)/100;
       y = Math.floor((e.clientY - yPos) / e.target.getBoundingClientRect().height * 10000)/100;
 
@@ -45,23 +39,12 @@ const LevelPage = () => {
         posY: y
       });
 
-      // console.log(`X: ${x} || Y: ${y}`)
-
       setOptionPos({
         left: x+"%",
         top: y+"%",
       });
 
       const charOptions = document.getElementById("options").classList.remove("hidden");
-
-      if(x > target.x - target.padding &&
-        x < target.x + target.padding &&
-        y > target.y - target.padding &&
-        y < target.y + target.padding){
-        // console.log("Found");
-      } else{
-        // console.log("Not Found");
-      }
     };
 
     const checkFind = (item) => {
@@ -78,36 +61,43 @@ const LevelPage = () => {
             coordinated.posX < coordinates.x + padding &&
             coordinated.posY > coordinates.y - padding &&
             coordinated.posY < coordinates.y + padding){
-              
+              const changeIndex = levelCharacters.map(e => e.name).indexOf(item);
+
+              levelCharacters[changeIndex].found = true;
+              console.log(levelCharacters);
+              const icon = document.getElementById(`${item}`);
+              timerStop();
+              icon.classList.remove("false");
+              icon.classList.add("true");
               console.log("Found");
           } else{
               console.log("Not Found");
           };
         });
-        const charOptions = document.getElementById("options").classList.add("hidden");
-      // const updatedCharacters = levelCharacters.map((obj) => {
-      //   finalItems.map((coord) => {
-      //     if(x > coord.x - padding &&
-      //       x < coord.x + padding &&
-      //       y > coord.y - padding &&
-      //       y < coord.y + padding){
-      //       console.log("Found");
-      //     } else{
-      //       console.log("Not Found");
-      //     }
-      //   });
-      // });
 
-      // let selectedItem = finalItems.find((obj) => {
-      //   return obj.name === item;
-      // })
+        const charOptions = document.getElementById("options").classList.add("hidden");
     };
 
-    let finalItems = [];
+    let inter = useRef();
+
+    const timer = () => {
+      inter.current = setInterval(() => {
+        setTime((prev) => prev + 1);
+      }, 1000);
+    };
+
+    const timerStop = () => {
+      const check = levelCharacters.every((obj) => obj.found === true);
+      if(check){
+        clearInterval(inter.current);
+      };
+    };
 
     useEffect(() => {
       //getting the coordinates from the db
         console.log(levelCharacters)
+        timer();
+        return () => clearInterval(inter.current);
     },[]);
 
   return (
@@ -130,7 +120,7 @@ const LevelPage = () => {
         <div className='characters'>
           {levelCharacters.map(obj => {
             return(
-            <div className='char-con'>
+            <div id = {`${obj.name}`} className='char-con false'>
               <img className='char-img' src={`./img/level/${obj.image}.jpeg`} alt = 'character' />
             </div>
             )
@@ -138,6 +128,7 @@ const LevelPage = () => {
           }
         </div>
 
+          <div className='timer'>{time}</div>
 
     </div>
   )
