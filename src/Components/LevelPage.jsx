@@ -4,6 +4,7 @@ import FirebaseContext from '../Context/FirebaseContext';
 import {gameObjects} from '../Context/GameContext';
 import { useContext } from 'react';
 import { onSnapshot, getDoc, doc } from 'firebase/firestore';
+import Popup from './Popup';
 
 const LevelPage = () => {
     const {id} = useParams();
@@ -21,6 +22,7 @@ const LevelPage = () => {
     const [optionPos, setOptionPos] = useState(styles);
     const [coordinated, setCoordinated] = useState({posX: 0, posY: 0});
     const [time, setTime] = useState(0);
+    const [popup, setPopup] = useState(false);
 
     let xPos = 0;
     let yPos = 0;
@@ -90,6 +92,7 @@ const LevelPage = () => {
       const check = levelCharacters.every((obj) => obj.found === true);
       if(check){
         clearInterval(inter.current);
+        setPopup(true);
       };
     };
 
@@ -101,7 +104,7 @@ const LevelPage = () => {
     },[]);
 
   return (
-    <div className='levelPage'>
+    <div id='container' className='levelPage'>
 
         <div className='game'>
             <img className='game-level' src={`./img/${id}.jpg`} alt='game' onClick={(e) => mousePos(e)}/>
@@ -127,9 +130,13 @@ const LevelPage = () => {
           })
           }
         </div>
-
           <div className='timer'>{time}</div>
-
+          
+          {popup && (
+            <div className='container-popup'>
+              <Popup time = {time}/>
+            </div>
+          )}
     </div>
   )
 }
