@@ -22,7 +22,7 @@ export function FirebaseProvider({children}){
     const db = getFirestore();
 
     const getCollDb = (num) => {
-        const colRef = collection(db, `${num}`);
+        const colRef = collection(db, `level${num}`);
         return colRef;
     };
 

@@ -4,7 +4,6 @@ import "./style/style.css";
 import LevelPage from "./Components/LevelPage";
 import Nav from "./Components/Nav";
 import { FirebaseProvider } from "./Context/FirebaseContext";
-import { GameProvider } from "./Context/GameContext";
 
 function App() {
   return (

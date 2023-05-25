@@ -93,12 +93,13 @@ const LevelPage = () => {
       if(check){
         clearInterval(inter.current);
         setPopup(true);
+        const reset = levelCharacters.map(obj => {obj.found = false});
+        console.log(levelCharacters);
       };
     };
 
     useEffect(() => {
       //getting the coordinates from the db
-        console.log(levelCharacters)
         timer();
         return () => clearInterval(inter.current);
     },[]);
