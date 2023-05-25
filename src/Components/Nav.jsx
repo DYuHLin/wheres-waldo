@@ -6,7 +6,7 @@ const Nav = () => {
   return (
     <nav className='header'>
         <div className='left'>
-            <Link to = "/">
+            <Link to = "/" style={{textDecoration: 'none'}}>
                 <div className='logo-text'>
                     Find/Found
                 </div>
@@ -14,7 +14,7 @@ const Nav = () => {
         </div>
 
         <div className='right'>
-          <Link to = "/leaderboard">
+          <Link to = "/leaderboard" style={{textDecoration: 'none'}}>
             <div className='leader'>
               Leaderboard
             </div>

@@ -16,7 +16,6 @@ const Leaderboard = () => {
                 record.push({...doc.data(), id: doc.id});
                 setCurrentTable(record);
             });
-            console.log(currentTable);
         });
     };
 
@@ -34,7 +33,7 @@ const Leaderboard = () => {
                     <div className='firstCol lead-title'>Name</div>
                     <div className='secondCol lead-time'>Time in seconds</div>
                 </div>
-                {currentTable.map(obj => {
+                {currentTable.sort((a, b) => {return a.time - b.time}).map(obj => {
                     return(
                         <div className='row'>
                         <div className='data1'>{obj.name}</div>

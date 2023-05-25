@@ -1,4 +1,4 @@
-import { createContext, useState } from "react";
+import { createContext } from "react";
 import { initializeApp } from "firebase/app";
 import {getFirestore, collection} from "firebase/firestore";
 
@@ -17,7 +17,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 
 export function FirebaseProvider({children}){
-    const [items, setItems] = useState([]);
 
     const db = getFirestore();
 
@@ -26,40 +25,8 @@ export function FirebaseProvider({children}){
         return colRef;
     };
 
-    const incQuantity = (index) => {
-        const newArr = items.map((obj) => {
-            if(index === obj.id){
-                return{...obj, quantity: obj.quantity + 1}           
-            } else {
-                return obj;
-            };
-        });
-        setItems(newArr);
-    };
-
-    const getTotal = () => {
-        let totalAmount = 0;
-        for(const cart in items){
-            totalAmount += items[cart].price * items[cart].quantity;
-        }
-
-        return totalAmount.toFixed(2);
-    };
-
-    const decQuantity = (index) => {
-        const newArr = items.map((obj) => {
-            if(index === obj.id){
-                return{...obj, quantity: obj.quantity - 1}
-            } else {
-                return obj;
-            };
-            
-        });
-        setItems(newArr);
-    };
-
     return(
-        <FirebaseContext.Provider value = {{items, getCollDb, incQuantity, decQuantity, getTotal, db}}>
+        <FirebaseContext.Provider value = {{getCollDb, db}}>
             {children}
         </FirebaseContext.Provider>
     )

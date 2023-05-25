@@ -3,12 +3,12 @@ import { useParams } from "react-router-dom";
 import FirebaseContext from '../Context/FirebaseContext';
 import {gameObjects} from '../Context/GameContext';
 import { useContext } from 'react';
-import { onSnapshot, getDoc, doc } from 'firebase/firestore';
+import { getDoc, doc } from 'firebase/firestore';
 import Popup from './Popup';
 
 const LevelPage = () => {
     const {id} = useParams();
-    const {getCollDb,db} = useContext(FirebaseContext);
+    const {db} = useContext(FirebaseContext);
 
     let conNum = parseInt(id);
     let newGameObj = gameObjects.filter(old => old.level === conNum);
@@ -24,17 +24,12 @@ const LevelPage = () => {
     const [time, setTime] = useState(0);
     const [popup, setPopup] = useState(false);
 
-    let xPos = 0;
-    let yPos = 0;
-    let x;
-    let y;
-
     const mousePos = (e) => {
-      xPos = e.target.getBoundingClientRect().left;
-      yPos = e.target.getBoundingClientRect().top;
+      let xPos = e.target.getBoundingClientRect().left;
+      let yPos = e.target.getBoundingClientRect().top;
 
-      x = Math.floor((e.clientX - xPos) / e.target.getBoundingClientRect().width * 10000)/100;
-      y = Math.floor((e.clientY - yPos) / e.target.getBoundingClientRect().height * 10000)/100;
+      let x = Math.floor((e.clientX - xPos) / e.target.getBoundingClientRect().width * 10000)/100;
+      let y = Math.floor((e.clientY - yPos) / e.target.getBoundingClientRect().height * 10000)/100;
 
       setCoordinated({
         posX: x,
@@ -53,11 +48,9 @@ const LevelPage = () => {
       const padding = 2;
       let coordinates;
       const docRef = doc(db, 'characters', `${item}`);
-      console.log(coordinated);
       getDoc(docRef)
         .then((doc) => {
           coordinates = doc.data();
-          console.log(coordinates, doc.id);
 
           if(coordinated.posX > coordinates.x - padding &&
             coordinated.posX < coordinates.x + padding &&
@@ -66,14 +59,12 @@ const LevelPage = () => {
               const changeIndex = levelCharacters.map(e => e.name).indexOf(item);
 
               levelCharacters[changeIndex].found = true;
-              console.log(levelCharacters);
               const icon = document.getElementById(`${item}`);
               timerStop();
               icon.classList.remove("false");
               icon.classList.add("true");
-              console.log("Found");
           } else{
-              console.log("Not Found");
+              return;
           };
         });
 
@@ -94,20 +85,19 @@ const LevelPage = () => {
         clearInterval(inter.current);
         setPopup(true);
         const reset = levelCharacters.map(obj => {obj.found = false});
-        console.log(levelCharacters);
       };
     };
 
     useEffect(() => {
-      //getting the coordinates from the db
         timer();
         return () => clearInterval(inter.current);
     },[]);
 
   return (
     <div id='container' className='levelPage'>
-
+      
         <div className='game'>
+          
             <img className='game-level' src={`./img/${id}.jpg`} alt='game' onClick={(e) => mousePos(e)}/>
 
           <div id='options' className='options hidden' style={optionPos}>
