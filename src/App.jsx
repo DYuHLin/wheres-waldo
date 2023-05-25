@@ -4,6 +4,7 @@ import "./style/style.css";
 import LevelPage from "./Components/LevelPage";
 import Nav from "./Components/Nav";
 import { FirebaseProvider } from "./Context/FirebaseContext";
+import Leaderboard from "./Components/Leaderboard";
 
 function App() {
   return (
@@ -16,6 +17,7 @@ function App() {
             <Routes>
               <Route path="/" element = {<HomePage />} />
               <Route path="/:id" element = {<LevelPage />} />
+              <Route path="/leaderboard" element = {<Leaderboard />} />
             </Routes>
           </div>
         </FirebaseProvider>

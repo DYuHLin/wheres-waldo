@@ -14,9 +14,11 @@ const Nav = () => {
         </div>
 
         <div className='right'>
+          <Link to = "/leaderboard">
             <div className='leader'>
-              <button>Leader</button>
+              Leaderboard
             </div>
+          </Link>
         </div>
     </nav>
   )
