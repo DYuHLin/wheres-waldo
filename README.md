@@ -3,6 +3,6 @@ This was quite the challenging project. I learnt a lot about how to use BaaS wit
 
 # Artwork
 If you enjoyed the art in this project please check Egor Klyuchnyk.
-https://chekavo.artstation.com/
-https://www.instagram.com/chekavo
-https://www.facebook.com/egor.klyuchnyk
+1. https://chekavo.artstation.com/
+2. https://www.instagram.com/chekavo
+3. https://www.facebook.com/egor.klyuchnyk
