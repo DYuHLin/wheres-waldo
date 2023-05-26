@@ -30,6 +30,7 @@ function App() {
 const HomePage = () => {
   return(
     <div className="home">
+      <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'></link>
       <div className="levels">
         <Link to = {"/1"}>
           <div className="level">
